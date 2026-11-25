@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="ja" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TTJWeb</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link id="favicon" rel="icon" type="image/png" sizes="512x512" href="/assets/app-icon-light.png">
+<link rel="stylesheet" href="/style.css">
+<script src="/app.js" type="module"></script>
+</head>
+<body>
+<div class="app-shell">
+  <header class="app-header">
+    <div class="header-primary">
+      <a class="brand" href="/?view=tree" aria-label="TTJWeb ホーム">
+        <img id="brand-icon" class="brand-icon" src="/assets/app-icon-light.png" width="20" height="20" alt="">
+        <span>TTJ</span>
+      </a>
+      <span class="pj-label" aria-hidden="true">PJ</span>
+      <div class="project-tabs-wrap hscroll-wrap" data-hscroll="projects">
+        <button type="button" class="hscroll-btn hscroll-prev" data-hscroll-dir="-1" aria-label="左のProjectへスクロール" title="左へスクロール" hidden>
+          <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3.5 5.5 8 10 12.5"/></svg>
+        </button>
+        <nav id="projects" class="project-tabs hscroll-track" data-hscroll-track aria-label="Project一覧"></nav>
+        <button type="button" class="hscroll-btn hscroll-next" data-hscroll-dir="1" aria-label="右のProjectへスクロール" title="右へスクロール" hidden>
+          <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg>
+        </button>
+      </div>
+      <button id="new-project" type="button" class="tool-btn" aria-label="Projectを作成" title="Projectを作成">
+        <span class="svg-icon" style="--icon-url:url('/icons/plus.svg')"></span>
+      </button>
+      <span id="connection-dot" class="connection-dot" title="接続を確認中" aria-label="接続状態"></span>
+    </div>
+
+    <div class="header-toolbar-wrap hscroll-wrap" data-hscroll="toolbar">
+      <button id="toolbar-scroll-left" type="button" class="hscroll-btn hscroll-prev" data-hscroll-dir="-1" aria-label="ツールバーを左へスクロール" title="左へスクロール" hidden>
+        <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3.5 5.5 8 10 12.5"/></svg>
+      </button>
+      <div class="header-toolbar hscroll-track" data-hscroll-track>
+      <nav id="view-tabs" class="tool-group" aria-label="表示形式">
+        <a href="/?view=timeline" data-view="timeline" class="tool-btn" aria-label="タイムライン" title="タイムライン">
+          <span class="svg-icon" style="--icon-url:url('/icons/timeline.svg')"></span>
+        </a>
+        <a href="/?view=tree" data-view="tree" class="tool-btn" aria-label="ツリー" title="ツリー">
+          <span class="svg-icon" style="--icon-url:url('/icons/tree.svg')"></span>
+        </a>
+        <a href="/?view=kanban" data-view="kanban" class="tool-btn" aria-label="カンバン" title="カンバン">
+          <span class="svg-icon" style="--icon-url:url('/icons/kanban.svg')"></span>
+        </a>
+        <a href="/?view=list" data-view="list" class="tool-btn" aria-label="リスト" title="リスト">
+          <span class="svg-icon" style="--icon-url:url('/icons/list.svg')"></span>
+        </a>
+      </nav>
+
+      <span class="tool-sep" aria-hidden="true"></span>
+
+      <div class="filter-anchor">
+        <button id="filter-btn" type="button" class="tool-btn" aria-expanded="false" aria-controls="filter-popover" aria-label="フィルタを開く" title="フィルタ（進行対象・ステータス・アイコンキー・担当者・検索）">
+          <span class="svg-icon" style="--icon-url:url('/icons/filter.svg')"></span>
+          <span id="filter-badge" class="tool-badge" hidden>0</span>
+        </button>
+      </div>
+
+      <button id="open-knowledge" type="button" class="tool-btn" aria-label="Projectの記録・知識" title="Projectの記録・知識（Knowledge）" disabled>
+        <span class="svg-icon" style="--icon-url:url('/icons/book.svg')"></span>
+      </button>
+
+      <div id="header-canvas-controls" class="tool-group canvas-header-tools" role="toolbar" aria-label="ツリー操作">
+        <span class="tool-sep" aria-hidden="true"></span>
+        <button id="tree-dir-toggle" type="button" class="tool-btn tree-dir-btn" data-canvas-action="toggle-direction" aria-label="ツリー方向を切替" title="ツリー方向を切替（横 → / 縦 ↓）">
+          <svg id="tree-dir-icon" class="tree-dir-svg" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="1.5" y="5.5" width="4" height="5" rx="1"/>
+            <rect x="10.5" y="2" width="4" height="4" rx="1"/>
+            <rect x="10.5" y="10" width="4" height="4" rx="1"/>
+            <path d="M5.5 8h2.75M8.25 4v8M8.25 4h2.25M8.25 12h2.25"/>
+          </svg>
+          <span id="tree-dir-label" class="tree-dir-label">横 →</span>
+        </button>
+        <span class="tool-sep" aria-hidden="true"></span>
+        <button id="zoom-out" type="button" class="tool-btn" data-canvas-action="zoom-out" aria-label="縮小" title="縮小">
+          <span class="svg-icon" style="--icon-url:url('/icons/minus.svg')"></span>
+        </button>
+        <span id="zoom-label" class="zoom-readout" data-canvas-zoom>100%</span>
+        <button id="zoom-in" type="button" class="tool-btn" data-canvas-action="zoom-in" aria-label="拡大" title="拡大">
+          <span class="svg-icon" style="--icon-url:url('/icons/plus.svg')"></span>
+        </button>
+        <button id="zoom-fit" type="button" class="tool-btn" data-canvas-action="fit" aria-label="全体を表示" title="全体を表示">
+          <span class="svg-icon" style="--icon-url:url('/icons/fit.svg')"></span>
+        </button>
+        <button id="zoom-reset" type="button" class="tool-btn" data-canvas-action="reset" aria-label="1:1（100%）にリセット" title="1:1（100%）にリセット">
+          <span class="svg-icon" style="--icon-url:url('/icons/reset.svg')"></span>
+        </button>
+      </div>
+
+      <span class="tool-sep" aria-hidden="true"></span>
+
+      <div class="tool-group" role="group" aria-label="作業管理">
+        <button id="new-task" type="button" class="tool-btn" aria-label="Taskを追加" title="Taskを追加" disabled>
+          <span class="svg-icon" style="--icon-url:url('/icons/task.svg')"></span>
+        </button>
+        <button id="new-ticket" type="button" class="tool-btn" aria-label="Ticketを追加" title="Ticketを追加" disabled>
+          <span class="svg-icon" style="--icon-url:url('/icons/ticket.svg')"></span>
+        </button>
+        <button id="manage-people" type="button" class="tool-btn" aria-label="Worker / Session管理" title="Worker / Session管理">
+          <span class="svg-icon" style="--icon-url:url('/icons/session.svg')"></span>
+        </button>
+        <button id="refresh" type="button" class="tool-btn" aria-label="再読み込み" title="再読み込み">
+          <span class="svg-icon" style="--icon-url:url('/icons/refresh.svg')"></span>
+        </button>
+      </div>
+
+      <span class="tool-sep" aria-hidden="true"></span>
+
+      <button id="theme-toggle" type="button" class="tool-btn" aria-label="テーマを切替" title="ダークテーマへ切替">
+        <span id="theme-icon" class="svg-icon" style="--icon-url:url('/icons/moon.svg')"></span>
+      </button>
+      <button id="open-settings" type="button" class="tool-btn" aria-label="設定を開く" title="設定">
+        <span class="svg-icon" style="--icon-url:url('/icons/settings.svg')"></span>
+      </button>
+      </div>
+      <button id="toolbar-scroll-right" type="button" class="hscroll-btn hscroll-next" data-hscroll-dir="1" aria-label="ツールバーを右へスクロール" title="右へスクロール" hidden>
+        <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div id="filter-popover" class="filter-popover" role="dialog" aria-label="表示フィルタ" hidden>
+    <div class="filter-popover-header">
+      <span class="filter-popover-title">表示フィルタ</span>
+      <button id="filter-close" type="button" class="tool-btn sm" aria-label="フィルタを閉じる" title="閉じる">
+        <span class="svg-icon sm" style="--icon-url:url('/icons/close.svg')"></span>
+      </button>
+    </div>
+
+    <div class="filter-section">
+      <label class="filter-switch-row">
+        <input id="filter-work-only-check" type="checkbox">
+        <span class="filter-switch-text">
+          <strong>進行対象のみ</strong>
+          <small>終了・待機の末尾と保留ブランチを省略</small>
+        </span>
+      </label>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-label">ステータス</div>
+      <div id="filter-status-chips" class="filter-chips" role="group" aria-label="ステータス絞り込み"></div>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-label">Job アイコンキー</div>
+      <div id="filter-icon-chips" class="filter-chips" role="group" aria-label="Job アイコンキー絞り込み"></div>
+    </div>
+
+    <div class="filter-section">
+      <label class="filter-label" for="filter-worker-select">担当者（Worker）</label>
+      <select id="filter-worker-select"></select>
+    </div>
+
+    <div class="filter-section">
+      <label class="filter-label" for="filter-query-input">キーワード検索</label>
+      <input id="filter-query-input" type="search" placeholder="目標・ID・補足メモで絞り込み">
+    </div>
+
+    <div class="filter-popover-footer">
+      <span id="filter-summary" class="filter-summary">フィルタなし</span>
+      <button id="filter-reset" type="button" class="btn secondary sm">フィルタをリセット</button>
+    </div>
+  </div>
+
+  <div id="error" class="error-banner" role="alert" hidden></div>
+
+  <section id="welcome" class="welcome-stage" hidden>
+    <div class="welcome-card">
+      <div class="welcome-mark">
+        <img id="welcome-icon" class="welcome-icon" src="/assets/app-icon-light.png" width="32" height="32" alt="">
+        <span>TTJ</span>
+      </div>
+      <h1>ここから、次の作業へ。</h1>
+      <p>Projectを作り、Task・Ticket・Jobのつながりをまとめましょう。<br>端末とブラウザで、同じローカル記録を共有できます。</p>
+      <button id="welcome-create" type="button" class="btn primary">Projectを作成</button>
+    </div>
+  </section>
+
+  <main id="workbench" class="main-stage" hidden>
+    <div id="view-content" class="view-stage"></div>
+  </main>
+
+  <footer class="app-footer hscroll-wrap" data-hscroll="footer" aria-label="状態の凡例">
+    <button type="button" class="hscroll-btn hscroll-prev sm" data-hscroll-dir="-1" aria-label="凡例を左へスクロール" title="左へスクロール" hidden>
+      <svg viewBox="0 0 16 16" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3.5 5.5 8 10 12.5"/></svg>
+    </button>
+    <div class="footer-track hscroll-track" data-hscroll-track>
+      <div class="legend-statuses">
+        <span class="legend-item"><i class="legend-dot st-todo"></i>未着手</span>
+        <span class="legend-item"><i class="legend-dot st-doing"></i>作業中</span>
+        <span class="legend-item"><i class="legend-dot st-waiting"></i>待機</span>
+        <span class="legend-item"><i class="legend-dot st-paused"></i>保留</span>
+        <span class="legend-item"><i class="legend-dot st-blocked"></i>障害</span>
+        <span class="legend-item"><i class="legend-dot st-completed"></i>完了</span>
+        <span class="legend-item"><i class="legend-dot st-canceled"></i>中止</span>
+      </div>
+      <div id="canvas-legend" class="legend-routing" hidden>
+        <span class="legend-item">
+          <svg class="legend-svg" viewBox="0 0 22 14" aria-hidden="true">
+            <path d="M1 6h20M11 6v7" fill="none" stroke="var(--edge-main)" stroke-width="1.6"/>
+            <circle cx="11" cy="6" r="3.4" fill="var(--edge-main)" stroke="var(--surface)" stroke-width="1.2"/>
+          </svg>
+          収束点（分岐・合流）
+        </span>
+        <span class="legend-item">
+          <svg class="legend-svg" viewBox="0 0 22 14" aria-hidden="true">
+            <path d="M11 1v12" fill="none" stroke="var(--edge-main)" stroke-width="1.5"/>
+            <path d="M1 9h5a5 5 0 0 1 10 0h5" fill="none" stroke="var(--edge-main)" stroke-width="1.6"/>
+          </svg>
+          またぐ半円（非接続交差）
+        </span>
+      </div>
+    </div>
+    <button type="button" class="hscroll-btn hscroll-next sm" data-hscroll-dir="1" aria-label="凡例を右へスクロール" title="右へスクロール" hidden>
+      <svg viewBox="0 0 16 16" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg>
+    </button>
+  </footer>
+</div>
+
+<dialog id="detail-modal" class="detail-modal" aria-labelledby="detail-modal-title">
+  <div class="modal-shell">
+    <header class="modal-topbar">
+      <div class="modal-topbar-left">
+        <button id="detail-back" type="button" class="tool-btn" aria-label="戻る" title="戻る" hidden>
+          <span class="svg-icon" style="--icon-url:url('/icons/back.svg')"></span>
+        </button>
+        <span id="detail-status" class="status-badge"></span>
+        <span id="detail-kind" class="modal-kind"></span>
+      </div>
+      <div class="modal-topbar-right">
+        <button id="detail-delete" type="button" class="tool-btn danger-tool" aria-label="削除" title="削除" hidden>
+          <span class="svg-icon" style="--icon-url:url('/icons/trash.svg')"></span>
+        </button>
+        <button id="detail-edit" type="button" class="tool-btn" aria-label="編集" title="編集" hidden>
+          <span class="svg-icon" style="--icon-url:url('/icons/edit.svg')"></span>
+        </button>
+        <button id="detail-copy-id" type="button" class="tool-btn" aria-label="IDをコピー" title="IDをコピー">
+          <span class="svg-icon" style="--icon-url:url('/assets/octicons/tag-16.svg')"></span>
+        </button>
+        <button id="detail-close" type="button" class="tool-btn" aria-label="閉じる" title="閉じる">
+          <span class="svg-icon" style="--icon-url:url('/icons/close.svg')"></span>
+        </button>
+      </div>
+    </header>
+    <div class="modal-title-wrap">
+      <h2 id="detail-modal-title" class="modal-title"></h2>
+      <p id="detail-modal-id" class="modal-id"></p>
+    </div>
+    <p id="detail-error" class="error-inline" role="alert" hidden></p>
+    <div id="detail-modal-body" class="modal-body"></div>
+  </div>
+</dialog>
+
+<dialog id="panel-modal" class="detail-modal panel-modal" aria-labelledby="panel-modal-title">
+  <div class="modal-shell">
+    <header class="modal-topbar">
+      <div class="modal-topbar-left">
+        <button id="panel-back" type="button" class="tool-btn" aria-label="戻る" title="戻る" hidden>
+          <span class="svg-icon" style="--icon-url:url('/icons/back.svg')"></span>
+        </button>
+        <span id="panel-badge" class="status-badge" hidden></span>
+        <h2 id="panel-modal-title" class="form-modal-title"></h2>
+      </div>
+      <div class="modal-topbar-right">
+        <div id="panel-actions" class="modal-topbar-right"></div>
+        <button id="panel-close" type="button" class="tool-btn" aria-label="閉じる" title="閉じる">
+          <span class="svg-icon" style="--icon-url:url('/icons/close.svg')"></span>
+        </button>
+      </div>
+    </header>
+    <p id="panel-error" class="error-inline" role="alert" hidden></p>
+    <div id="panel-modal-body" class="modal-body"></div>
+  </div>
+</dialog>
+
+<dialog id="dialog" class="form-modal" aria-labelledby="dialog-title">
+  <form id="dialog-form" class="modal-shell">
+    <header class="modal-topbar">
+      <h2 id="dialog-title" class="form-modal-title"></h2>
+      <button type="button" id="close-dialog" class="tool-btn" aria-label="閉じる" title="閉じる">
+        <span class="svg-icon" style="--icon-url:url('/icons/close.svg')"></span>
+      </button>
+    </header>
+    <div id="dialog-fields" class="modal-body form-fields"></div>
+    <p id="dialog-error" class="error-inline" role="alert" hidden></p>
+    <footer class="form-footer">
+      <button type="button" id="cancel-dialog" class="btn secondary">キャンセル</button>
+      <button type="submit" id="dialog-submit" class="btn primary">保存</button>
+    </footer>
+  </form>
+</dialog>
+
+<div id="toast" class="toast" popover="manual" role="status" aria-live="polite" hidden></div>
+</body>
+</html>
