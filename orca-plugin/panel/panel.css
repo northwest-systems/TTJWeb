@@ -1,0 +1,757 @@
+/* Orca Right-Sidebar Compact Panel Overrides */
+.orca-panel-body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: var(--orca-font-sans, Inter, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif);
+}
+
+/* Re-declare mask-image in panel.css so relative --icon-url resolves from panel/ rather than panel/vendor/ */
+.orca-panel-body .svg-icon {
+  -webkit-mask-image: var(--icon-url);
+  mask-image: var(--icon-url);
+}
+
+.orca-panel-shell {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.orca-control-bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  min-height: 44px;
+  padding: 8px 6px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.orca-control-left,
+.orca-control-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  min-width: 0;
+}
+
+.orca-control-left {
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.orca-control-right {
+  flex: none;
+  overflow: visible;
+}
+
+.orca-panel-body .orca-control-bar .tool-btn.sm {
+  width: 26px;
+  height: 26px;
+}
+
+.orca-switch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 26px;
+  padding: 0 6px 0 4px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  flex: none;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.orca-switch-btn:hover {
+  background: var(--hover);
+}
+
+.orca-switch-btn.is-on {
+  border-color: var(--accent);
+}
+
+.orca-switch-track {
+  position: relative;
+  display: inline-block;
+  width: 24px;
+  height: 14px;
+  border-radius: 99px;
+  background: var(--border);
+  transition: background 0.15s ease;
+  flex: none;
+}
+
+.orca-switch-btn.is-on .orca-switch-track {
+  background: var(--accent);
+}
+
+.orca-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--surface);
+  transition: transform 0.15s ease;
+}
+
+.orca-switch-btn.is-on .orca-switch-thumb {
+  transform: translateX(10px);
+}
+
+.orca-conn-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 20px;
+  max-width: 82px;
+  padding: 0 6px;
+  border-radius: 99px;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: var(--raised);
+  color: var(--muted);
+  min-width: 0;
+}
+
+.orca-conn-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex: none;
+  background: var(--muted);
+}
+
+.orca-conn-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.orca-conn-badge.is-ok {
+  background: var(--hover);
+  color: var(--accent);
+}
+
+.orca-conn-badge.is-ok .orca-conn-dot {
+  background: var(--st-completed);
+}
+
+.orca-conn-badge.is-error {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.orca-conn-badge.is-error .orca-conn-dot {
+  background: var(--danger);
+}
+
+.orca-conn-badge.is-off {
+  background: var(--raised);
+  color: var(--muted);
+}
+
+.orca-icon-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+}
+
+.orca-icon-btn:hover,
+.orca-icon-btn[aria-expanded="true"] {
+  color: var(--fg);
+  background: var(--hover);
+  border-color: var(--accent);
+}
+
+.orca-inline-svg {
+  display: block;
+  flex: none;
+}
+
+.orca-status-pip {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1.5px solid var(--surface);
+  background: var(--muted);
+  pointer-events: none;
+}
+
+.orca-status-pip.is-running {
+  background: var(--st-completed);
+}
+
+.orca-status-pip.is-stopped {
+  background: var(--muted);
+}
+
+.orca-status-pip.is-error {
+  background: var(--danger);
+}
+
+.orca-status-pip.is-serving {
+  background: var(--accent);
+}
+
+.orca-status-pip.is-hidden {
+  display: none;
+}
+
+/* Collapsible Drawer Cards (Server Management / Mobile QR) */
+.orca-drawer {
+  flex: none;
+  padding: 8px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  max-height: 70vh;
+  max-height: 70dvh;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  min-width: 0;
+}
+
+.orca-drawer-card {
+  width: 100%;
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.orca-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+.orca-drawer-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.orca-server-status-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 7px 8px;
+  border-radius: 5px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  min-width: 0;
+}
+
+.orca-server-indicator {
+  width: 9px;
+  height: 9px;
+  margin-top: 4px;
+  border-radius: 50%;
+  flex: none;
+  background: var(--muted);
+}
+
+.orca-server-indicator.is-running {
+  background: var(--st-completed);
+}
+
+.orca-server-indicator.is-stopped {
+  background: var(--muted);
+}
+
+.orca-server-indicator.is-error {
+  background: var(--danger);
+}
+
+.orca-server-status-info {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.orca-server-status-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--fg);
+  overflow-wrap: anywhere;
+}
+
+.orca-server-status-meta {
+  font-size: 10.5px;
+  color: var(--muted);
+  margin-top: 2px;
+  overflow-wrap: anywhere;
+}
+
+.orca-drawer-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.orca-drawer-actions .btn {
+  flex: 1 1 0;
+  min-width: 0;
+  justify-content: center;
+  white-space: nowrap;
+  padding: 5px 8px;
+  font-size: 11.5px;
+}
+
+.orca-full-btn {
+  width: 100%;
+  justify-content: center;
+  font-size: 11.5px;
+}
+
+.orca-drawer-msg {
+  margin: 0;
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  background: var(--raised);
+  color: var(--fg);
+  border: 1px solid var(--border);
+}
+
+.orca-drawer-msg.is-ok {
+  background: var(--hover);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.orca-drawer-msg.is-error {
+  background: var(--danger-bg);
+  color: var(--danger);
+  border-color: var(--danger-border);
+}
+
+.orca-config-details {
+  border-top: 1px solid var(--border);
+  padding-top: 6px;
+}
+
+.orca-config-summary {
+  cursor: pointer;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--muted);
+  user-select: none;
+  padding: 2px 0;
+}
+
+.orca-config-summary:hover {
+  color: var(--fg);
+}
+
+.orca-config-form {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.orca-field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.orca-field span {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.orca-field input[type="text"] {
+  width: 100%;
+  min-width: 0;
+  height: 28px;
+  padding: 4px 7px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 11.5px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.orca-checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--fg);
+  cursor: pointer;
+}
+
+.orca-config-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2px;
+}
+
+/* Mobile QR Drawer */
+.orca-mobile-url-box {
+  padding: 7px 8px;
+  border-radius: 5px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  min-width: 0;
+}
+
+.orca-mobile-url-text {
+  display: block;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--fg);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+
+.orca-mobile-qr-stage {
+  display: flex;
+  justify-content: center;
+  padding: 2px 0;
+}
+
+.orca-mobile-qr-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  max-width: 100%;
+}
+
+.orca-mobile-qr-wrap svg {
+  display: block;
+  width: 164px;
+  height: 164px;
+  max-width: 100%;
+  height: auto;
+}
+
+.orca-tailscale-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 7px 8px;
+  border-radius: 5px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+
+.orca-tailscale-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-width: 0;
+}
+
+.orca-tailscale-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--fg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.orca-pill {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 7px;
+  border-radius: 99px;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+  flex: none;
+  background: var(--raised);
+  color: var(--muted);
+}
+
+.orca-pill.is-ok {
+  background: var(--hover);
+  color: var(--accent);
+}
+
+.orca-pill.is-warn {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.orca-tailscale-btn {
+  width: 100%;
+  justify-content: center;
+  font-size: 11.5px;
+}
+
+.orca-mobile-hint {
+  margin: 0;
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.orca-state-stage {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 14px;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  background: var(--bg);
+}
+
+.orca-state-card {
+  width: 100%;
+  max-width: 340px;
+  padding: 20px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+}
+
+.orca-state-card.is-error {
+  border-color: var(--danger-border);
+  text-align: left;
+}
+
+.orca-state-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.orca-state-card h2 {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--fg);
+}
+
+.orca-state-card p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.orca-error-message {
+  padding: 8px 10px;
+  border-radius: 4px;
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  color: var(--danger) !important;
+  font-size: 11.5px;
+}
+
+.orca-error-hint {
+  font-size: 11px !important;
+}
+
+.orca-state-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.orca-app-root {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+}
+
+/* Hide redundant header connection dot inside Orca sidebar (status is shown in top control bar) */
+.orca-panel-body #connection-dot,
+.orca-panel-body .connection-dot {
+  display: none !important;
+}
+
+/* Compact header & layout for right-sidebar width (360-480px) */
+.orca-panel-body .app-header {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1px;
+  min-height: auto;
+  padding: 5px 6px 2px;
+}
+
+.orca-panel-body .header-primary {
+  width: 100%;
+  min-height: 28px;
+  gap: 4px;
+}
+
+.orca-panel-body .project-tabs-wrap {
+  flex: 1 1 auto;
+}
+
+.orca-panel-body .header-toolbar-wrap {
+  width: 100%;
+  flex: none;
+}
+
+.orca-panel-body .header-toolbar {
+  width: 100%;
+  justify-content: flex-start;
+  gap: 2px;
+  padding: 8px 4px;
+}
+
+.orca-panel-body .hscroll-btn {
+  width: 18px;
+  height: 24px;
+}
+
+.orca-panel-body .hscroll-btn.sm {
+  width: 16px;
+  height: 18px;
+}
+
+.orca-panel-body .tool-btn {
+  width: 26px;
+  height: 26px;
+}
+
+.orca-panel-body .tree-dir-btn {
+  width: auto;
+  height: 26px;
+  padding: 0 6px;
+  font-size: 10.5px;
+}
+
+.orca-panel-body .project-tab {
+  max-width: 132px;
+  height: 24px;
+  padding: 0 7px;
+  font-size: 11.5px;
+}
+
+.orca-panel-body .app-footer {
+  height: 26px;
+  padding: 0 4px;
+  gap: 3px;
+}
+
+.orca-panel-body .legend-statuses {
+  gap: 8px;
+}
+
+.orca-panel-body .list-subbar {
+  padding: 6px 8px 3px;
+}
+
+.orca-panel-body .list-scroll {
+  padding: 4px 8px 10px;
+}
+
+.orca-panel-body .list-row {
+  padding: 6px 8px;
+}
+
+.orca-panel-body .timeline-scroll {
+  padding: 8px;
+}
+
+.orca-panel-body .timeline-row {
+  padding: 8px 8px;
+  gap: 7px;
+}
+
+.orca-panel-body .kanban-board {
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  padding: 8px;
+  gap: 8px;
+}
+
+.orca-panel-body .kanban-column,
+.orca-panel-body .kanban-column.is-collapsed {
+  flex: none;
+  width: 100%;
+  height: auto;
+  align-self: stretch;
+}
+
+.orca-panel-body .kanban-cards {
+  overflow-y: visible;
+  scrollbar-gutter: auto;
+  padding: 8px;
+}
+
+.orca-panel-body .kanban-card {
+  width: 100%;
+  height: 124px;
+  min-height: 124px;
+  max-height: 124px;
+}
+
+.orca-panel-body .canvas-hint {
+  display: none;
+}
+
+.orca-panel-body dialog.detail-modal,
+.orca-panel-body dialog.form-modal {
+  width: calc(100vw - 16px);
+  max-width: calc(100vw - 16px);
+  max-height: 90vh;
+  max-height: 90dvh;
+}
+
+.orca-panel-body .modal-shell {
+  max-height: 90vh;
+  max-height: 90dvh;
+}

@@ -1,0 +1,163 @@
+{
+  "manifestVersion": 2,
+  "execution": "trusted-worker",
+  "id": "ttjweb-sidebar",
+  "name": "TTJWeb",
+  "version": "0.2.0",
+  "description": "Orca の右サイドバーに TTJWeb を常駐表示し、別ウィンドウ（ブラウザ）表示、サーバー起動・停止、スマホ用 URL/QR コード表示、Tailscale 公開切り替えを行えるプラグインです。",
+  "icon": "assets/icon.png",
+  "engines": {
+    "orca": ">=1.4.248"
+  },
+  "main": "src/worker.mjs",
+  "capabilities": [
+    { "kind": "settings:own" },
+    { "kind": "storage:own" }
+  ],
+  "contributes": {
+    "panels": [
+      {
+        "id": "ttjweb",
+        "title": "TTJWeb",
+        "icon": "layers",
+        "entry": "panel/index.html",
+        "ui": "html"
+      }
+    ],
+    "commands": [
+      {
+        "id": "ttjweb.toggleEnabled",
+        "title": "TTJWeb: 右サイドバー常駐を ON / OFF 切り替え",
+        "when": "global"
+      },
+      {
+        "id": "ttjweb.refresh",
+        "title": "TTJWeb: 今すぐ再読み込み",
+        "when": "global"
+      },
+      {
+        "id": "ttjweb.serverStart",
+        "title": "TTJWeb: サーバーを起動",
+        "when": "global"
+      },
+      {
+        "id": "ttjweb.serverStop",
+        "title": "TTJWeb: サーバーを停止",
+        "when": "global"
+      },
+      {
+        "id": "ttjweb.toggleTailscale",
+        "title": "TTJWeb: Tailscale スマホ公開を ON / OFF 切り替え",
+        "when": "global"
+      }
+    ],
+    "statusBarItems": [
+      {
+        "id": "ttjweb-status",
+        "text": "TTJ: ON",
+        "icon": "layers",
+        "tone": "accent",
+        "tooltip": "クリックで TTJWeb 常駐を ON / OFF 切り替え",
+        "command": "ttjweb.toggleEnabled"
+      }
+    ],
+    "settings": [
+      {
+        "key": "enabled",
+        "title": "右サイドバー常駐（ON / OFF）",
+        "description": "OFF にすると自動更新とバックエンド通信を完全に停止します（起動中のサーバー自体は停止しません）。",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "key": "backendMode",
+        "title": "バックエンド接続方式",
+        "description": "TTJWeb サーバー経由（HTTP）または ttjcore 直接実行を選択します。",
+        "type": "string",
+        "enum": ["server", "ttjcore"],
+        "enumLabels": ["TTJWeb サーバー (HTTP)", "ttjcore 直接実行"],
+        "default": "server"
+      },
+      {
+        "key": "serverUrl",
+        "title": "接続先 TTJWeb サーバー URL",
+        "description": "TTJWeb サーバー (HTTP) モード時の接続先 URL。",
+        "type": "string",
+        "default": "http://127.0.0.1:8878",
+        "placeholder": "http://127.0.0.1:8878"
+      },
+      {
+        "key": "authToken",
+        "title": "認証トークン（任意）",
+        "description": "TTJWeb サーバーが --auth-token を要求する場合に設定します。パネル側へは公開されません。",
+        "type": "string",
+        "default": "",
+        "placeholder": "sample-token"
+      },
+      {
+        "key": "corePath",
+        "title": "ttjcore バイナリパス",
+        "description": "ttjcore 直接実行モードまたはサーバー起動時に使用する実行ファイルパス（空欄時は ttjcore）。",
+        "type": "string",
+        "default": "",
+        "placeholder": "~/sample/path/ttjcore"
+      },
+      {
+        "key": "homePath",
+        "title": "ttjcore --home パス",
+        "description": "ttjcore 直接実行モードまたはサーバー起動時に --home へ渡すプロファイルパス（任意）。",
+        "type": "string",
+        "default": "",
+        "placeholder": "~/sample/path/sample.profile"
+      },
+      {
+        "key": "wslDistro",
+        "title": "WSL ディストリ名",
+        "description": "Windows から WSL 経由で ttjcore / server.py を実行するディストリ名（空文字ならネイティブ実行）。",
+        "type": "string",
+        "default": "",
+        "placeholder": "sample-wsl-distro"
+      },
+      {
+        "key": "autoRefreshSeconds",
+        "title": "自動更新間隔（秒）",
+        "description": "ON 時の自動更新間隔。0 で手動更新のみになります。",
+        "type": "integer",
+        "default": 10,
+        "minimum": 0,
+        "maximum": 300
+      },
+      {
+        "key": "mobileUrl",
+        "title": "スマホ用アクセス URL",
+        "description": "空欄時は Tailscale Serve / Tailscale ステータスから https://<DNSName>:<port>/ を自動検出します。",
+        "type": "string",
+        "default": "",
+        "placeholder": "https://sample-host.tail0000.ts.net:8878/"
+      },
+      {
+        "key": "serverWorkdir",
+        "title": "TTJWeb フォルダパス",
+        "description": "server.py がある TTJWeb フォルダのパス（空欄時は実行中プロセスや保存済み設定から自動補完）。",
+        "type": "string",
+        "default": "",
+        "placeholder": "~/sample/path/ttjweb"
+      },
+      {
+        "key": "serverAllowHosts",
+        "title": "サーバー許可ホスト（--allow-host）",
+        "description": "サーバー起動時に --allow-host へ渡すホスト（カンマ区切り）。空欄時は自動検出した Tailscale ホストを利用します。",
+        "type": "string",
+        "default": "",
+        "placeholder": "sample-host.tail0000.ts.net:8878"
+      },
+      {
+        "key": "serverReadOnly",
+        "title": "サーバーを閲覧専用で起動（--read-only）",
+        "description": "有効にするとプラグインからサーバーを起動する際に --read-only を付与します。",
+        "type": "boolean",
+        "default": false
+      }
+    ]
+  }
+}
